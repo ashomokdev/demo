@@ -1,0 +1,13 @@
+<?xml version = "1.0"?>
+<dataset>
+    <emails>
+        <email>user1@comeon.com</email>
+        <email>user2@comeon.com</email>
+        <email>user3@not-so-cool.com</email>
+    </emails>
+    <resources>
+        <url>http://test.com/new-xml</url>
+        <url>http://test.com/duplicate-emails</url>
+        <url>http://test.com/duplicate-emails</url>
+    </resources>
+</dataset>
