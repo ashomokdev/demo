@@ -1,16 +1,11 @@
 package com.comeon.demo.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.ArrayList;
 
 @Builder
-@ToString
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @XmlRootElement(name = "dataset")
