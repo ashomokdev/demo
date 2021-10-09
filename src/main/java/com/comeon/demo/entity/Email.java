@@ -20,7 +20,6 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Email {
-
     @Id
     @GeneratedValue
     private Long id;
@@ -30,8 +29,7 @@ public class Email {
     /**
      * Time stamp in which email have been collected
      */
-    private Timestamp createdTimeStamp;
+    private Timestamp timeStamp;
 
-
-
+    private boolean processed;
 }

@@ -28,5 +28,7 @@ public class Url {
     /**
      * Time stamp in which url have been collected
      */
-    private Timestamp createdTimeStamp;
+    private Timestamp timeStamp;
+
+    private boolean processed;
 }

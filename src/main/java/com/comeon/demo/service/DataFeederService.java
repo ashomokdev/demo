@@ -13,10 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 @Slf4j
 @Service
-public class DataProcessorServiceImpl implements DataProcessorService {
+public class DataFeederService {
 
     @Autowired
     private EmailsDAO emailsDAO;
@@ -24,7 +26,6 @@ public class DataProcessorServiceImpl implements DataProcessorService {
     @Autowired
     private ResourcesDAO resourcesDAO;
 
-    @Override
     public void post(DatasetDTO datasetDTO) {
         try {
             EmailsDTO emailsDTO = datasetDTO.getEmails();
@@ -32,7 +33,7 @@ public class DataProcessorServiceImpl implements DataProcessorService {
                 if (EmailValidator.isValid(emailDto)) {
                     Email email = Email.builder()
                             .email(emailDto)
-                            .createdTimeStamp(new Timestamp(System.currentTimeMillis()))
+                            .timeStamp(new Timestamp(System.currentTimeMillis()))
                             .build();
                     emailsDAO.save(email);
                 }
@@ -41,7 +42,7 @@ public class DataProcessorServiceImpl implements DataProcessorService {
             for (String urlDto : resourcesDTO.getUrl()) {
                     Url url = Url.builder()
                             .url(urlDto)
-                            .createdTimeStamp(new Timestamp(System.currentTimeMillis()))
+                            .timeStamp(new Timestamp(System.currentTimeMillis()))
                             .build();
                 resourcesDAO.save(url);
             }
@@ -49,5 +50,17 @@ public class DataProcessorServiceImpl implements DataProcessorService {
             e.printStackTrace();
             log.debug(e.getMessage());
         }
+    }
+
+    public List<com.comeon.demo.model.Email> getAll() {
+        ArrayList<com.comeon.demo.model.Email> data = new ArrayList<>();
+        for (Email email: emailsDAO.findAll()){
+            com.comeon.demo.model.Email email1 = com.comeon.demo.model.Email.builder()
+                    .email(email.getEmail())
+                    .count(10)
+                    .build();
+            data.add(email1);
+        }
+        return data;
     }
 }
