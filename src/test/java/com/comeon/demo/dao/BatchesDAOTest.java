@@ -1,6 +1,5 @@
 package com.comeon.demo.dao;
 
-import com.comeon.demo.entity.BatchedEmails;
 import com.comeon.demo.entity.CountedEmail;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +26,14 @@ public class BatchesDAOTest {
         HashSet<CountedEmail> data = new HashSet<>();
         data.add(CountedEmail.builder().email(email1).count(1).build());
         data.add(CountedEmail.builder().email(email2).count(2).build());
-        batchesDAO.save(BatchedEmails.builder().emails(data).build());
+        data.forEach(item->
+                batchesDAO.save(
+                        CountedEmail.builder()
+                                .email(item.getEmail())
+                                .count(item.getCount())
+                                .build()));
+
         assertTrue(batchesDAO.findAll().iterator().hasNext());
+        assertEquals("test2@test.com", batchesDAO.findAll().iterator().next().getEmail());
     }
 }

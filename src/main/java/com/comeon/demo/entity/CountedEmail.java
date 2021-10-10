@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -17,13 +20,13 @@ import javax.persistence.*;
 public class CountedEmail {
     @Id
     @GeneratedValue
-    private Long id;
+    private Long dataId;
+
+    private Timestamp batchStart;
+
+    private Timestamp batchEnd;
 
     private String email;
 
     private int count;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="batchId", nullable=false)
-    private BatchedEmails batchId;
 }
