@@ -3,6 +3,7 @@ package com.comeon.demo.controller;
 import com.comeon.demo.dto.DatasetDTO;
 import com.comeon.demo.model.Email;
 import com.comeon.demo.service.DataFeederService;
+import com.comeon.demo.service.DataProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,9 @@ public class ProcessDataController {
 
     @Autowired
     private DataFeederService dataFeederService;
+
+    @Autowired
+    private DataProcessorService dataProcessorService;
 
     @RequestMapping(value = "/postData", method = RequestMethod.POST)
     public
@@ -37,39 +41,23 @@ public class ProcessDataController {
     @ResponseBody
     ResponseEntity getAllEmailsCount() {
         try {
-            List<Email> data = dataFeederService.getAll();
+            List<Email> data = dataProcessorService.getAllCounted();
             return new ResponseEntity(data, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("You failed to post data. " + e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Unknown error. " + e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 
-    @RequestMapping(value = "/getEmailCount", method = RequestMethod.GET)
-    public
+
+    @GetMapping("/getEmailCount/{email}")
     @ResponseBody
-    ResponseEntity getEmailCount() {
-        String[] jsonResult = new String[]{"hhh", "hhh7"};
-        return new ResponseEntity(jsonResult, HttpStatus.ACCEPTED);
+    public ResponseEntity getEmailCount(@PathVariable String email) {
+        try {
+            long count = dataProcessorService.getCountByEmail(email);
+            return new ResponseEntity(count, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Unknown error. " + e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
-
-
-
-
-//    @RequestMapping(value = "/getFullEmailsInfo", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public String pdfFileForm(Model model) {
-//        PdfFileData pdfFile = generator.getPdfFileData();
-//        model.addAttribute("pdfFile", pdfFile);
-//        return "pdfFileInputForm";
-//    }
-//
-//    @RequestMapping(value = "/pdfFileInputForm", method = RequestMethod.POST, produces = {"application/pdf"})
-//    @ResponseBody
-//    public FileSystemResource getFile(@ModelAttribute PdfFileData pdfFile) {
-//        File file = generator.generatePdf(pdfFile, fontFile);
-//        generator.updateLastId(pdfFile);
-//        return new FileSystemResource(file);
-//    }
-
 
 }

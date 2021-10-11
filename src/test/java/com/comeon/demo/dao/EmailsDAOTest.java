@@ -8,15 +8,12 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import static org.junit.Assert.*;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 //https://www.baeldung.com/spring-boot-testing
 //https://stackoverflow.com/questions/34617152/how-to-re-create-database-before-each-test-in-spring
@@ -24,10 +21,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 @DataJpaTest
 public class EmailsDAOTest {
 
+    public static final long interval = 300000; //5 mins
     @Autowired
     private EmailsDAO emailsDAO;
-
-    public static final long interval = 300000; //5 mins
 
     @Test
     public void testCreateEmail() throws Exception {

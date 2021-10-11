@@ -2,7 +2,7 @@ package com.comeon.demo;
 
 import com.comeon.demo.controller.ProcessDataController;
 import com.comeon.demo.service.DataFeederService;
-import com.comeon.demo.service.DataProcessor;
+import com.comeon.demo.service.DataProcessorService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +17,9 @@ import org.springframework.test.web.servlet.MvcResult;
 
 import javax.servlet.http.HttpServletResponse;
 
-import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 
 @RunWith(SpringRunner.class)
@@ -35,6 +32,9 @@ public class DemoApplicationTests {
 
     @MockBean
     private DataFeederService dataFeederService;
+
+    @MockBean
+    private DataProcessorService dataProcessorService;
 
     @Test
     public void testPostData() throws Exception {

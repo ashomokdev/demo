@@ -10,9 +10,9 @@ public class EmailValidator {
         validDomains.add("@cherry.se");
     }
 
-    public static boolean isValid(String email){
-        for (String validDomain : validDomains){
-            if (email.endsWith(validDomain)){
+    public static boolean isValid(String email) {
+        for (String validDomain : validDomains) {
+            if (email.endsWith(validDomain)) {
                 return true;
             }
         }
