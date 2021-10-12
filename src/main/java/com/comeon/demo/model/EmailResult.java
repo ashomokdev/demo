@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @AllArgsConstructor
 @NoArgsConstructor
 
-public class Email {
+public class EmailResult {
 
     private String email;
 

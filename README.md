@@ -1,4 +1,5 @@
 # demo# Getting Started
+H2 database used.
 
 ### Run APP
 mvn clean compile spring-boot:run
@@ -9,6 +10,7 @@ mvn spring-boot:stop
 ### Test Requests:
 #### POST localhost:8080/postData
 Body:
+```
 <?xml version = "1.0"?>
 <dataset>
     <emails>
@@ -24,7 +26,7 @@ Body:
         <url>https://lux-buy.com/lux-buy-test/test_comeon_remove_me.xml</url>
     </resources>
 </dataset>
-
+```
 Headers, Content-Type: application/xml
 
 #### GET localhost:8080/getAllEmailsData
@@ -32,8 +34,7 @@ Headers, Content-Type: application/xml
 #### GET localhost:8080/getEmailCount/user1@comeon.com
 
 ## Known issues
-* Some data not processed in rare edge cases, row was added before startTime.
 * Possible endless recursive call of method if data points to same data. Not fixed, processed as is by requirements. 
 * Big data not tested, Super real data not tested.
-* Test covered 76% classes, 48% lines. 
+* Test covered 76% classes, 33% lines. 
 

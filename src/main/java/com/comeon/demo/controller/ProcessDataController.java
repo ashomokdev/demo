@@ -1,7 +1,7 @@
 package com.comeon.demo.controller;
 
 import com.comeon.demo.dto.DatasetDTO;
-import com.comeon.demo.model.Email;
+import com.comeon.demo.model.EmailResult;
 import com.comeon.demo.service.DataFeederService;
 import com.comeon.demo.service.DataProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +41,7 @@ public class ProcessDataController {
     @ResponseBody
     ResponseEntity getAllEmailsCount() {
         try {
-            List<Email> data = dataProcessorService.getAllCounted();
+            List<EmailResult> data = dataProcessorService.getAllCounted();
             return new ResponseEntity(data, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("Unknown error. " + e.getMessage(), HttpStatus.BAD_REQUEST);

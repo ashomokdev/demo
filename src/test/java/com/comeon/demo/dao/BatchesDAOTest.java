@@ -1,7 +1,7 @@
 package com.comeon.demo.dao;
 
 import com.comeon.demo.entity.CountedEmail;
-import com.comeon.demo.model.Email;
+import com.comeon.demo.model.EmailResult;
 import com.comeon.demo.utils.Converter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,7 +56,7 @@ public class BatchesDAOTest {
                                 .build()));
 
         assertEquals(2, batchesDAO.getAllCounted().length);
-        List<Email> result = Converter.convert(batchesDAO.getAllCounted());
+        List<EmailResult> result = Converter.convert(batchesDAO.getAllCounted());
         assertEquals(result.get(0).getEmail(), email1);
     }
 }

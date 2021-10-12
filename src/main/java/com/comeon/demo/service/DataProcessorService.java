@@ -9,6 +9,7 @@ import com.comeon.demo.dto.ResourcesDTO;
 import com.comeon.demo.entity.CountedEmail;
 import com.comeon.demo.entity.Email;
 import com.comeon.demo.entity.Url;
+import com.comeon.demo.model.EmailResult;
 import com.comeon.demo.utils.Converter;
 import com.comeon.demo.utils.EmailValidator;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class DataProcessorService {
     @Autowired
     private BatchesDAO batchesDAO;
 
-    public List<com.comeon.demo.model.Email> getAllCounted() {
+    public List<EmailResult> getAllCounted() {
         return Converter.convert(batchesDAO.getAllCounted());
     }
 
@@ -45,9 +46,6 @@ public class DataProcessorService {
     }
 
     public void processData(Timestamp batchStart, Timestamp batchEnd) {
-        log.info("New batch processing started for requested time period. Time start: "
-                + batchStart + ", time end: " + batchEnd);
-
         processEmails(batchStart, batchEnd);
         processUrls(batchStart, batchEnd);
     }
@@ -74,13 +72,13 @@ public class DataProcessorService {
     private void processUrls(Timestamp batchStart, Timestamp batchEnd) {
         List<Url> data = resourcesDAO.findByPeriod(batchStart, batchEnd);
         data.forEach(url -> {
-            processUrlRecursively(url.getUrl(), emailsDAO);
+            processUrlRecursively(url.getUrl());
             url.setProcessed(true);
             resourcesDAO.save(url);
         });
     }
 
-    public void processUrlRecursively(String url, EmailsDAO emailsDAO) {
+    public void processUrlRecursively(String url) {
         try {
             RestTemplate restTemplate = new RestTemplateBuilder()
                     .setConnectTimeout(Duration.ofMillis(500))
@@ -94,11 +92,11 @@ public class DataProcessorService {
                     try {
                         EmailsDTO emailsDTO = datasetDTO.getEmails();
                         if (emailsDTO != null && emailsDTO.getEmail().size() > 0) {
-                            saveEmails(emailsDTO, emailsDAO);
+                            saveEmails(emailsDTO);
                         }
                         ResourcesDTO resourcesDTO = datasetDTO.getResources();
                         if (resourcesDTO != null && resourcesDTO.getUrl().size() > 0) {
-                            resourcesDTO.getUrl().forEach(u -> processUrlRecursively(u, emailsDAO));
+                            resourcesDTO.getUrl().forEach(this::processUrlRecursively);
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -114,7 +112,7 @@ public class DataProcessorService {
         }
     }
 
-    private void saveEmails(EmailsDTO emailsDTO, EmailsDAO emailsDAO) {
+    private void saveEmails(EmailsDTO emailsDTO) {
         for (String emailDto : emailsDTO.getEmail()) {
             if (EmailValidator.isValid(emailDto)) {
                 Email email = Email.builder()

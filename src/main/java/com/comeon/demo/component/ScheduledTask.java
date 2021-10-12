@@ -7,14 +7,12 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 
 @Slf4j
 @Component
 public class ScheduledTask {
     //    public static final long interval = 300000; //5 mins
     public static final long interval = 5000;
-    private static final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     @Autowired
     private DataProcessorService dataProcessorService;
 
@@ -28,6 +26,4 @@ public class ScheduledTask {
         Timestamp batchStart = new Timestamp(currentTimeMillis - interval);
         dataProcessorService.processData(batchStart, batchEnd);
     }
-
-
 }
